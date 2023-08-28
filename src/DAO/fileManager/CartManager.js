@@ -24,8 +24,8 @@ export default class CartManager extends FileManager {
     }
 
     //Agrega productos a un carrito
-    addProduct = async (cid,pid) => {
-        const cart = await this.getCart(id)
+    addProduct = async (cid,pid,quantity) => {
+        const cart = await this.getCart(cid)
         try{
             if(!cart) throw "Cart not exist"
             const productIn= cart.products.findIndex(p => p.id == pid)
@@ -34,7 +34,7 @@ export default class CartManager extends FileManager {
             } else{
                 cart.products.push({
                     id: pid,
-                    quantity: 1
+                    quantity
             })
             
             return await this.update([cart])

@@ -2,10 +2,11 @@ import express from 'express'
 import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
 import mongoose from 'mongoose'
+import chatModel from './DAO/mongoManager/models/chat.model.js'
+import productModel from './DAO/mongoManager/models/product.model.js'
 import productRouter from './routes/product.router.js'
 import cartRouter from './routes/cart.router.js'
 import viewsRouter from './routes/views.router.js'
-import ProductManager from './DAO/fileManager/ProductManager.js'
 import __dirname from './utils.js'
 
 const app = express()
@@ -27,12 +28,34 @@ const runServer = () => {
 
         io.on('connection', socket => {
             socket.on('new-product', async data => {
-                const productManager = new ProductManager()
-                await productManager.createProduct(data)
-                const products = await productManager.listProducts()
-                io.emit('reload-table', products)
+                try{
+                    const products = await productModel.create(data)
+                    io.emit('reload-table', products)
+                }catch (error){
+                    console.error('Failed to save product', error)
+                }
             })
+
+            socket.on('deleteProduct', async (productId) => {
+                try {
+                  await productModel.findByIdAndDelete(productId);
+                  io.emit('deleting-product', productId);
+                } catch (error) {
+                  console.error('Failed to delete product', error);
+                }
+              })
+
+              socket.on('new-message', async (newMessage) => {
+                try {
+                  const message = await chatModel.create(newMessage);
+                  io.emit('mensajeGeneral', message);
+                } catch (error) {
+                  console.error('Failed to save message', error);
+                }
+              })
+
         })
+
 }
 
 const URL = 'mongodb+srv://CarolinaCoderDB:3992coderbd@coderclustercgv.kecc4uv.mongodb.net/?retryWrites=true&w=majority'
