@@ -22,6 +22,7 @@ if (!user) {
     socket.emit('new', user)
 }
 
+
 //Enviar mensajes
 chatbox.addEventListener('keyup', event => {
     if (event.key === 'Enter') {
@@ -45,7 +46,6 @@ socket.on('logs', (data) => {
     data.forEach(message => {
         messages = `<p><i>${message.user}</i>: ${message.message}</p>` + messages
     })
-    
     divLogs.innerHTML = messages
-    
+
 })
