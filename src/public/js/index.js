@@ -43,9 +43,12 @@ socket.on('logs', (data) => {
     const divLogs = document.getElementById('logs')
     let messages = ''
 
-    data.forEach(message => {
+    const dataArray = Array.isArray(data) ? data : [];
+
+    dataArray.forEach(message => {
         messages = `<p><i>${message.user}</i>: ${message.message}</p>` + messages
     })
+    
     divLogs.innerHTML = messages
 
 })
