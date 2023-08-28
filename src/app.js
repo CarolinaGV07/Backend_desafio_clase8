@@ -23,38 +23,41 @@ app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
 
 const runServer = () => {
-    const httpServer = app.listen(8080, () => console.log('Listening...'))
-        const io = new Server(httpServer)
+  const httpServer = app.listen(8080, () => console.log('Listening...'))
+  const io = new Server(httpServer)
 
-        io.on('connection', socket => {
-            socket.on('new-product', async data => {
-                try{
-                    const products = await productModel.create(data)
-                    io.emit('reload-table', products)
-                }catch (error){
-                    console.error('Failed to save product', error)
-                }
-            })
+  io.on('connection', socket => {
+    socket.on('new-product', async data => {
+      try {
+        const products = await productModel.create(data)
+        io.emit('reload-table', products)
+      } catch (error) {
+        console.error('Failed to save product', error)
+      }
+    })
 
-            socket.on('deleteProduct', async (productId) => {
-                try {
-                  await productModel.findByIdAndDelete(productId);
-                  io.emit('deleting-product', productId);
-                } catch (error) {
-                  console.error('Failed to delete product', error);
-                }
-              })
+    socket.on('deleteProduct', async (productId) => {
+      try {
+        await productModel.findByIdAndDelete(productId);
+        io.emit('deleting-product', productId);
+      } catch (error) {
+        console.error('Failed to delete product', error);
+      }
+    })
 
-              socket.on('new-message', async (newMessage) => {
-                try {
-                  const message = await chatModel.create(newMessage);
-                  io.emit('mensajeGeneral', message);
-                } catch (error) {
-                  console.error('Failed to save message', error);
-                }
-              })
+    socket.on('new', user => console.log(`${user} is connected`))
 
-        })
+    socket.on('message', async (data) => {
+      try{
+        const messages = await chatModel.create(data)
+        io.emit('logs', messages)
+      }catch (error) {
+        console.error('Failed to save messages', error);
+      }
+      
+    })
+
+  })
 
 }
 
@@ -62,10 +65,11 @@ const URL = 'mongodb+srv://CarolinaCoderDB:3992coderbd@coderclustercgv.kecc4uv.m
 mongoose.set('strictQuery', false)
 console.log('Connecting...')
 mongoose.connect(URL, {
-    dbName: 'ecommerce'
+  dbName: 'ecommerce'
 })
-    .then(() => {
-        console.log('DB connected')
-        runServer()})
-    .catch(e => console.log('Can`t connect to DB'))
+  .then(() => {
+    console.log('DB connected')
+    runServer()
+  })
+  .catch(e => console.log('Can`t connect to DB'))
 

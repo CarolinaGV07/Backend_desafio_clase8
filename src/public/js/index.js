@@ -31,7 +31,6 @@ chatbox.addEventListener('keyup', event => {
                 user,
                 message
             })
-            console.log(lalala)
 
             chatbox.value = ''
         }
@@ -39,7 +38,7 @@ chatbox.addEventListener('keyup', event => {
 })
 
 //Recibir mensajes
-socket.on('logs', data => {
+socket.on('logs', (data) => {
     const divLogs = document.getElementById('logs')
     let messages = ''
 
