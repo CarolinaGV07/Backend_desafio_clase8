@@ -3,7 +3,13 @@
 <div>
     <i id="user" class="user"></i> <input id="chatbox" class="chatbox">
 </div>
-<div id="logs" class="logs"></div>
+<div id="logs">
+    {{#each messages}}
+    <div class="message">
+        <span class="user">{{this.user}}</span>: {{this.message}}
+    </div>
+    {{/each}}
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>

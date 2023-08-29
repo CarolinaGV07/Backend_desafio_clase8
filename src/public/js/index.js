@@ -43,12 +43,13 @@ socket.on('logs', (data) => {
     const divLogs = document.getElementById('logs')
     let messages = ''
 
-    const dataArray = Array.isArray(data) ? data : [];
+    //const dataArray = Array.isArray(data) ? data : [];
 
-    dataArray.forEach(message => {
-        messages = `<p><i>${message.user}</i>: ${message.message}</p>` + messages
-    })
+    //dataArray.forEach(message => {
+    messages += `<p><i>${data.user}</i>: ${data.message}</p>`
+    //})
     
     divLogs.innerHTML = messages
+    console.log(messages)
 
 })
