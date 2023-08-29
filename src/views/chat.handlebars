@@ -1,11 +1,20 @@
-<h1>Chat</h1>
+<h1 class="divHeader">Chat</h1>
 
 <div>
-    <i id="user" class="user"></i> <input id="chatbox" class="chatbox">
+    <form action="" class="form">
+        <ul>
+            <li>
+                 <i id="user" class="user"></i>
+                 <input id="chatbox" class="input">
+            </li>
+        </ul>
+    </form>
+  
 </div>
-<div id="logs">
+
+<div id="logs" class="divHeader">
     {{#each messages}}
-    <div class="message">
+    <div class="message divHeader" >
         <span class="user">{{this.user}}</span>: {{this.message}}
     </div>
     {{/each}}

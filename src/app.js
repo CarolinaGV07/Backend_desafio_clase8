@@ -49,8 +49,11 @@ const runServer = () => {
 
     socket.on('message', async (data) => {
       try{
-        const messages = await chatModel.create(data)
+        await chatModel.create(data)
+        const messages = await chatModel.find().lean().exec()
+        console.log(messages)
         io.emit('logs', messages)
+       
       }catch (error) {
         console.error('Failed to save messages', error);
       }

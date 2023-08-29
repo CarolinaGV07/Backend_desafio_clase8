@@ -40,16 +40,14 @@ chatbox.addEventListener('keyup', event => {
 
 //Recibir mensajes
 socket.on('logs', (data) => {
-    const divLogs = document.getElementById('logs')
-    let messages = ''
+    const divLogs = document.getElementById('logs');
+    let messages = "";
 
-    //const dataArray = Array.isArray(data) ? data : [];
-
-    //dataArray.forEach(message => {
-    messages += `<p><i>${data.user}</i>: ${data.message}</p>`
-    //})
+    data.forEach((message) => {
+        console.log(message)
+        messages = `<p><i>${message.user}</i>: ${message.message}</p>` + messages;
+    })
     
-    divLogs.innerHTML = messages
-    console.log(messages)
+    divLogs.innerHTML = messages;
 
 })
